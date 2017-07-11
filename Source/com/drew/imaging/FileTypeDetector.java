@@ -37,7 +37,11 @@ import java.io.InputStream;
 public class FileTypeDetector
 {
     private final static ByteTrie<FileType> _root;
+<<<<<<< HEAD
     private final static int[] _offsets;
+=======
+    private final static int[] offsets = new int[]{0, 4, 8};
+>>>>>>> 81a9c96... Add base file detection of aiff files from magic bytes - throws exception when read due to no metadata support, currently not tested
 
     static
     {
@@ -71,6 +75,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Wav, "WAVE".getBytes());
         _root.addPath(FileType.Avi, "AVI ".getBytes());
         _root.addPath(FileType.Webp, "WEBP".getBytes());
+        _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
 
         _root.addPath(FileType.Arw, "II".getBytes(), new byte[]{0x2a, 0x00, 0x08, 0x00});
         _root.addPath(FileType.Crw, "II".getBytes(), new byte[]{0x1a, 0x00, 0x00, 0x00}, "HEAPCCDR".getBytes());
@@ -92,21 +97,30 @@ public class FileTypeDetector
     @NotNull
     public static FileType detectFileType(@NotNull final BufferedInputStream inputStream, @NotNull int offset) throws IOException
     {
-        if (!inputStream.markSupported())
-            throw new IOException("Stream must support mark/reset");
+        for (int offset : offsets) {
+            if (!inputStream.markSupported())
+                throw new IOException("Stream must support mark/reset");
 
-        int maxByteCount = _root.getMaxDepth();
+            inputStream.skip(offset);
 
-        inputStream.mark(maxByteCount);
-
+            int maxByteCount = _root.getMaxDepth();
         byte[] bytes = new byte[maxByteCount];
         inputStream.skip(offset);
         int bytesRead = inputStream.read(bytes);
 
-        if (bytesRead == -1)
-            throw new IOException("Stream ended before file's magic number could be determined.");
+            byte[] bytes = new byte[maxByteCount];
+            int bytesRead = inputStream.read(bytes);
 
-        inputStream.reset();
+            if (bytesRead == -1)
+                throw new IOException("Stream ended before file's magic number could be determined.");
+
+            inputStream.reset();
+
+            FileType fileType = _root.find(bytes);
+            if (fileType instanceof FileType && (fileType != FileType.Unknown || offset == offsets[offsets.length-1])) {
+                return fileType;
+            }
+        }
 
         FileType fileType = _root.find(bytes);
 
