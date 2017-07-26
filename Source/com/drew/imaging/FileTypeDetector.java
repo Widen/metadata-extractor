@@ -37,11 +37,7 @@ import java.io.InputStream;
 public class FileTypeDetector
 {
     private final static ByteTrie<FileType> _root;
-<<<<<<< HEAD
     private final static int[] _offsets;
-=======
-    private final static int[] offsets = new int[]{0, 4, 8};
->>>>>>> 81a9c96... Add base file detection of aiff files from magic bytes - throws exception when read due to no metadata support, currently not tested
 
     static
     {
@@ -75,6 +71,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Wav, "WAVE".getBytes());
         _root.addPath(FileType.Avi, "AVI ".getBytes());
         _root.addPath(FileType.Webp, "WEBP".getBytes());
+        _root.addPath(FileType.Aiff, "FORM".getBytes());
         _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
 
         _root.addPath(FileType.Arw, "II".getBytes(), new byte[]{0x2a, 0x00, 0x08, 0x00});
@@ -97,30 +94,21 @@ public class FileTypeDetector
     @NotNull
     public static FileType detectFileType(@NotNull final BufferedInputStream inputStream, @NotNull int offset) throws IOException
     {
-        for (int offset : offsets) {
-            if (!inputStream.markSupported())
-                throw new IOException("Stream must support mark/reset");
+        if (!inputStream.markSupported())
+            throw new IOException("Stream must support mark/reset");
 
-            inputStream.skip(offset);
+        int maxByteCount = _root.getMaxDepth();
 
-            int maxByteCount = _root.getMaxDepth();
+        inputStream.mark(maxByteCount);
+
         byte[] bytes = new byte[maxByteCount];
         inputStream.skip(offset);
         int bytesRead = inputStream.read(bytes);
 
-            byte[] bytes = new byte[maxByteCount];
-            int bytesRead = inputStream.read(bytes);
+        if (bytesRead == -1)
+            throw new IOException("Stream ended before file's magic number could be determined.");
 
-            if (bytesRead == -1)
-                throw new IOException("Stream ended before file's magic number could be determined.");
-
-            inputStream.reset();
-
-            FileType fileType = _root.find(bytes);
-            if (fileType instanceof FileType && (fileType != FileType.Unknown || offset == offsets[offsets.length-1])) {
-                return fileType;
-            }
-        }
+        inputStream.reset();
 
         FileType fileType = _root.find(bytes);
 
@@ -165,6 +153,7 @@ public class FileTypeDetector
     public static FileType handleContainer(@NotNull final BufferedInputStream inputStream, @NotNull FileType fileType) throws IOException
     {
         switch (fileType) {
+            case Aiff:
             case Riff:
                 return detectFileType(inputStream, 8);
             case Tiff:

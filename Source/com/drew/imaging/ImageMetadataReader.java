@@ -160,7 +160,7 @@ public class ImageMetadataReader
             case Wav:
                 return WavMetadataReader.readMetadata(inputStream);
             case Aiff:
-                throw new ImageProcessingException("Aiff file detected - Metadata data extraction not currently supported");
+                return new Metadata();
             default:
                 throw new ImageProcessingException("File format is not supported");
         }

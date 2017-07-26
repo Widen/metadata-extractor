@@ -44,6 +44,7 @@ public enum FileType
     Wav("audio/vnd.wave", false, ".wav", ".wave"),
     Avi("video/vnd.avi", false, ".avi"),
     Webp("image/webp", false, ".webp"),
+    Iff(null, true, ".iff"),
     Aiff("audio/x-aiff", false, ".aiff", ".aif", ".aifc"),
 
     /** Sony camera raw. */
