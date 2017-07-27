@@ -2,7 +2,6 @@ package com.drew.metadata.aiff;
 
 import com.drew.imaging.iff.IffHandler;
 import com.drew.lang.ByteArrayReader;
-import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 
 import java.io.IOException;
@@ -54,11 +53,24 @@ public class AiffHandler extends IffHandler
                 _directory.setInt(AiffDirectory.TAG_NUMBER_CHANNELS, reader.getInt16(0));
                 _directory.setLong(AiffDirectory.TAG_NUMBER_SAMPLE_FRAMES, reader.getUInt32(2));
                 _directory.setInt(AiffDirectory.TAG_SAMPLE_SIZE, reader.getInt16(6));
-                byte[] sampleRate = reader.getBytes(8, 10);
-                _directory.setByteArray(AiffDirectory.TAG_SAMPLE_RATE, sampleRate);
+                _directory.setLong(AiffDirectory.TAG_SAMPLE_RATE, calculateIEEE754FloatingPoint(reader.getBytes(8, 10)));
             }
         } catch (IOException ex) {
             _directory.addError("Error processing " + fourCC + " chunk: " + ex.getMessage());
+        }
+    }
+
+    private long calculateIEEE754FloatingPoint(byte[] bytes) throws IOException
+    {
+        ByteArrayReader reader = new ByteArrayReader(bytes);
+        boolean positive = ((reader.getUInt16(0) & 0x8000) == 0) ? true : false;
+        int exponent = (reader.getUInt16(0) & 0x7FFF) - 16383;
+        long mantissa = reader.getInt64(2);
+
+        if (positive) {
+            return mantissa >>> (63 - exponent);
+        } else {
+            return -1 * (mantissa >>> (63 - exponent));
         }
     }
 }

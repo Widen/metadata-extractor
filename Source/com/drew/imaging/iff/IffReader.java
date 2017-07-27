@@ -25,7 +25,7 @@ public class IffReader
         if (!fileFourCC.equals("FORM") && !fileFourCC.equals("RIFF"))
             throw new IffProcessingException("Invalid header: " + fileFourCC);
 
-        // IFF files are always big-endian
+        // IFF files are always big-endian and RIFF files are always little-endian
         reader.setMotorolaByteOrder((fileFourCC.equals("FORM") ? true : false));
 
         // The total size of the chunks that follow plus 4 bytes for the FourCC
