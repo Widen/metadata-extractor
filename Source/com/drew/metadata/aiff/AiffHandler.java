@@ -55,13 +55,24 @@ public class AiffHandler extends IffHandler
                 _directory.setInt(AiffDirectory.TAG_SAMPLE_SIZE, reader.getInt16(6));
                 long sampleRate = calculateIEEE754FloatingPoint(reader.getBytes(8, 10));
                 _directory.setLong(AiffDirectory.TAG_SAMPLE_RATE, sampleRate);
-                _directory.setDouble(AiffDirectory.TAG_DURATION, (double)reader.getUInt32(2) / (double)sampleRate);
+                
+                double duration = (double)reader.getUInt32(2) / (double)sampleRate;
+                Integer hours = (int)duration / (int)(Math.pow(60, 2));
+                Integer minutes = ((int)duration / (int)(Math.pow(60, 1))) - (hours * 60);
+                Integer seconds = (int)Math.round((duration / (Math.pow(60, 0))) - (minutes * 60));
+                String time = String.format("%1$02d:%2$02d:%3$02d", hours, minutes, seconds);
+
+                _directory.setString(AiffDirectory.TAG_DURATION, time);
             }
         } catch (IOException ex) {
             _directory.addError("Error processing " + fourCC + " chunk: " + ex.getMessage());
         }
     }
 
+    /**
+     * Sample rate is stored in an "80 bit IEEE Standard 754 floating point number (Standard Apple
+     * Numeric Environment [SANE] data type Extended)" as per Apple's original documentation.
+     */
     private long calculateIEEE754FloatingPoint(byte[] bytes) throws IOException
     {
         ByteArrayReader reader = new ByteArrayReader(bytes);
