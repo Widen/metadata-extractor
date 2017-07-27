@@ -67,11 +67,11 @@ public class FileTypeDetector
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x02, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x03, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x05, 0x01});
-        _root.addPath(FileType.Riff, "RIFF".getBytes());
         _root.addPath(FileType.Wav, "WAVE".getBytes());
         _root.addPath(FileType.Avi, "AVI ".getBytes());
         _root.addPath(FileType.Webp, "WEBP".getBytes());
         _root.addPath(FileType.Iff, "FORM".getBytes());
+        _root.addPath(FileType.Iff, "RIFF".getBytes());
         _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
         _root.addPath(FileType.Aiff, "AIFC".getBytes()); // Compressed form of AIFF
 
@@ -113,9 +113,9 @@ public class FileTypeDetector
 
         FileType fileType = _root.find(bytes);
 
-    //noinspection ConstantConditions
+        //noinspection ConstantConditions
         return fileType;
-}
+    }
 
     /**
      * Examines the file's bytes and estimates the file's type.
@@ -155,7 +155,6 @@ public class FileTypeDetector
     {
         switch (fileType) {
             case Iff:
-            case Riff:
                 return detectFileType(inputStream, 8);
             case Tiff:
             default:
