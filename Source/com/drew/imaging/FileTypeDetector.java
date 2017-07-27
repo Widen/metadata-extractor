@@ -71,8 +71,9 @@ public class FileTypeDetector
         _root.addPath(FileType.Wav, "WAVE".getBytes());
         _root.addPath(FileType.Avi, "AVI ".getBytes());
         _root.addPath(FileType.Webp, "WEBP".getBytes());
-        _root.addPath(FileType.Aiff, "FORM".getBytes());
+        _root.addPath(FileType.Iff, "FORM".getBytes());
         _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
+        _root.addPath(FileType.Aiff, "AIFC".getBytes()); // Compressed form of AIFF
 
         _root.addPath(FileType.Arw, "II".getBytes(), new byte[]{0x2a, 0x00, 0x08, 0x00});
         _root.addPath(FileType.Crw, "II".getBytes(), new byte[]{0x1a, 0x00, 0x00, 0x00}, "HEAPCCDR".getBytes());
@@ -153,7 +154,7 @@ public class FileTypeDetector
     public static FileType handleContainer(@NotNull final BufferedInputStream inputStream, @NotNull FileType fileType) throws IOException
     {
         switch (fileType) {
-            case Aiff:
+            case Iff:
             case Riff:
                 return detectFileType(inputStream, 8);
             case Tiff:
