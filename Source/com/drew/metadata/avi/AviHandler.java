@@ -3,6 +3,7 @@ package com.drew.metadata.avi;
 import com.drew.imaging.iff.IffHandler;
 import com.drew.lang.ByteArrayReader;
 import com.drew.lang.annotations.NotNull;
+import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 
 import java.io.IOException;
@@ -23,18 +24,15 @@ import java.io.IOException;
  *
  * @author Payton Garland
  */
-public class AviHandler implements IffHandler
+public class AviHandler extends IffHandler
 {
-    @NotNull
-    private final AviDirectory _directory;
 
     @NotNull
     private String _currentList = "";
 
-    public AviHandler(@NotNull Metadata metadata)
+    public AviHandler(Metadata metadata, AviDirectory directory)
     {
-        _directory = new AviDirectory();
-        metadata.addDirectory(_directory);
+        super(metadata, directory);
     }
 
     public boolean shouldAcceptIffIdentifier(@NotNull String identifier)

@@ -1,6 +1,8 @@
 package com.drew.imaging.iff;
 
 import com.drew.lang.annotations.NotNull;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
 
 /**
  * Interface of an class capable of handling events raised during the reading of a IFF file
@@ -8,8 +10,16 @@ import com.drew.lang.annotations.NotNull;
  *
  * @author Drew Noakes https://drewnoakes.com
  */
-public interface IffHandler
+public abstract class IffHandler<T extends Directory>
 {
+    protected T _directory;
+
+    public IffHandler(Metadata metadata, T directory)
+    {
+        _directory = directory;
+        metadata.addDirectory(_directory);
+    }
+
     /**
      * Gets whether the specified RIFF identifier is of interest to this handler.
      * Returning <code>false</code> causes processing to stop after reading only
@@ -18,7 +28,7 @@ public interface IffHandler
      * @param identifier The four character code identifying the type of IFF data
      * @return true if processing should continue, otherwise false
      */
-    boolean shouldAcceptIffIdentifier(@NotNull String identifier);
+    protected abstract boolean shouldAcceptIffIdentifier(@NotNull String identifier);
 
     /**
      * Gets whether this handler is interested in the specific chunk type.
@@ -29,7 +39,7 @@ public interface IffHandler
      * @param fourCC the four character code of this chunk
      * @return true if {@link IffHandler#processChunk(String, byte[])} should be called, otherwise false
      */
-    boolean shouldAcceptChunk(@NotNull String fourCC);
+    protected abstract boolean shouldAcceptChunk(@NotNull String fourCC);
 
     /**
      * Gets whether this handler is interested in the specific list type.
@@ -39,7 +49,7 @@ public interface IffHandler
      * @param fourCC the four character code of this chunk
      * @return true if {@link IffHandler#processChunk(String, byte[])} should be called, otherwise false
      */
-    boolean shouldAcceptList(@NotNull String fourCC);
+    protected abstract boolean shouldAcceptList(@NotNull String fourCC);
 
     /**
      * Perform whatever processing is necessary for the type of chunk with its
@@ -51,5 +61,5 @@ public interface IffHandler
      * @param fourCC the four character code of the chunk
      * @param payload they payload of the chunk as a byte array
      */
-    void processChunk(@NotNull String fourCC, @NotNull byte[] payload);
+    protected abstract void processChunk(@NotNull String fourCC, @NotNull byte[] payload);
 }

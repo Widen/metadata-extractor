@@ -2,6 +2,7 @@ package com.drew.metadata.aiff;
 
 import com.drew.imaging.iff.IffHandler;
 import com.drew.lang.ByteArrayReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 
 import java.io.IOException;
@@ -19,14 +20,11 @@ import java.io.IOException;
  *
  * @author Payton Garland
  */
-public class AiffHandler implements IffHandler
+public class AiffHandler extends IffHandler
 {
-    AiffDirectory _directory;
-
-    public AiffHandler(Metadata metadata)
+    public AiffHandler(Metadata metadata, AiffDirectory directory)
     {
-        _directory = new AiffDirectory();
-        metadata.addDirectory(_directory);
+        super(metadata, directory);
     }
 
     @Override

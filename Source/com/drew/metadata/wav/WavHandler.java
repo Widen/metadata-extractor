@@ -1,7 +1,6 @@
 package com.drew.metadata.wav;
 
 import com.drew.imaging.iff.IffHandler;
-import com.drew.imaging.riff.RiffHandler;
 import com.drew.lang.ByteArrayReader;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
@@ -26,18 +25,14 @@ import java.io.IOException;
  *
  * @author Payton Garland
  */
-public class WavHandler implements IffHandler
+public class WavHandler extends IffHandler
 {
-    @NotNull
-    private final WavDirectory _directory;
-
     @NotNull
     private String _currentList = "";
 
-    public WavHandler(@NotNull Metadata metadata)
+    public WavHandler(Metadata metadata, WavDirectory directory)
     {
-        _directory = new WavDirectory();
-        metadata.addDirectory(_directory);
+        super(metadata, directory);
     }
 
     public boolean shouldAcceptIffIdentifier(@NotNull String identifier)

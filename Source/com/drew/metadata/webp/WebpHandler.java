@@ -21,7 +21,6 @@
 package com.drew.metadata.webp;
 
 import com.drew.imaging.iff.IffHandler;
-import com.drew.imaging.riff.RiffHandler;
 import com.drew.lang.ByteArrayReader;
 import com.drew.lang.RandomAccessReader;
 import com.drew.lang.annotations.NotNull;
@@ -33,7 +32,7 @@ import com.drew.metadata.xmp.XmpReader;
 import java.io.IOException;
 
 /**
- * Implementation of {@link RiffHandler} specialising in WebP support.
+ * Implementation of {@link IffHandler} specialising in WebP support.
  *
  * Extracts data from chunk types:
  *
@@ -44,13 +43,13 @@ import java.io.IOException;
  *     <li><code>"XMP "</code>: full XMP data</li>
  * </ul>
  */
-public class WebpHandler implements IffHandler
+public class WebpHandler extends IffHandler
 {
-    @NotNull
-    private final Metadata _metadata;
+    Metadata _metadata;
 
-    public WebpHandler(@NotNull Metadata metadata)
+    public WebpHandler(Metadata metadata, WebpDirectory directory)
     {
+        super(metadata, directory);
         _metadata = metadata;
     }
 

@@ -5,6 +5,7 @@ import com.drew.imaging.iff.IffReader;
 import com.drew.lang.StreamReader;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
+import com.drew.metadata.aiff.AiffDirectory;
 import com.drew.metadata.aiff.AiffHandler;
 import com.drew.metadata.file.FileMetadataReader;
 
@@ -31,7 +32,7 @@ public class AiffMetadataReader
     public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, IffProcessingException
     {
         Metadata metadata = new Metadata();
-        new IffReader().processIff(new StreamReader(inputStream), new AiffHandler(metadata));
+        new IffReader().processIff(new StreamReader(inputStream), new AiffHandler(metadata, new AiffDirectory()));
         return metadata;
     }
 }

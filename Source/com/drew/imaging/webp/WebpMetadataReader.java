@@ -22,11 +22,11 @@ package com.drew.imaging.webp;
 
 import com.drew.imaging.iff.IffProcessingException;
 import com.drew.imaging.iff.IffReader;
-import com.drew.imaging.riff.RiffProcessingException;
 import com.drew.lang.StreamReader;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.file.FileMetadataReader;
+import com.drew.metadata.webp.WebpDirectory;
 import com.drew.metadata.webp.WebpHandler;
 
 import java.io.*;
@@ -56,7 +56,7 @@ public class WebpMetadataReader
     public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, IffProcessingException
     {
         Metadata metadata = new Metadata();
-        new IffReader().processIff(new StreamReader(inputStream), new WebpHandler(metadata));
+        new IffReader().processIff(new StreamReader(inputStream), new WebpHandler(metadata, new WebpDirectory()));
         return metadata;
     }
 }
