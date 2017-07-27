@@ -12,7 +12,7 @@ import java.io.IOException;
  * Extracts data from chunk types:
  *
  * <ul>
- *     <li><code>"comm"</code>: channel count, sample frame count, sample size, sample rate</li>
+ *     <li><code>"comm"</code>: channel count, sample frame count, sample size, sample rate, and duration</li>
  * </ul>
  *
  * Sources: http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/AIFF/AIFF.html
@@ -55,7 +55,7 @@ public class AiffHandler extends IffHandler
                 _directory.setInt(AiffDirectory.TAG_SAMPLE_SIZE, reader.getInt16(6));
                 long sampleRate = calculateIEEE754FloatingPoint(reader.getBytes(8, 10));
                 _directory.setLong(AiffDirectory.TAG_SAMPLE_RATE, sampleRate);
-                
+
                 double duration = (double)reader.getUInt32(2) / (double)sampleRate;
                 Integer hours = (int)duration / (int)(Math.pow(60, 2));
                 Integer minutes = ((int)duration / (int)(Math.pow(60, 1))) - (hours * 60);
