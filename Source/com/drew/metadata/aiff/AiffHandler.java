@@ -53,7 +53,9 @@ public class AiffHandler extends IffHandler
                 _directory.setInt(AiffDirectory.TAG_NUMBER_CHANNELS, reader.getInt16(0));
                 _directory.setLong(AiffDirectory.TAG_NUMBER_SAMPLE_FRAMES, reader.getUInt32(2));
                 _directory.setInt(AiffDirectory.TAG_SAMPLE_SIZE, reader.getInt16(6));
-                _directory.setLong(AiffDirectory.TAG_SAMPLE_RATE, calculateIEEE754FloatingPoint(reader.getBytes(8, 10)));
+                long sampleRate = calculateIEEE754FloatingPoint(reader.getBytes(8, 10));
+                _directory.setLong(AiffDirectory.TAG_SAMPLE_RATE, sampleRate);
+                _directory.setDouble(AiffDirectory.TAG_DURATION, (double)reader.getUInt32(2) / (double)sampleRate);
             }
         } catch (IOException ex) {
             _directory.addError("Error processing " + fourCC + " chunk: " + ex.getMessage());
