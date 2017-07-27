@@ -41,6 +41,7 @@ The library understands several formats of metadata, many of which may be presen
 * [WebP](http://en.wikipedia.org/wiki/WebP) properties
 * [WAV](http://en.wikipedia.org/wiki/WAV) properties
 * [AVI](http://en.wikipedia.org/wiki/Audio_Video_Interleave) properties
+* [AIFF](http://en.wikipedia.org/wiki/Audio_Interchange_File_Format) properties
 * [PNG](http://en.wikipedia.org/wiki/Portable_Network_Graphics) properties
 * [BMP](http://en.wikipedia.org/wiki/BMP_file_format) properties
 * [GIF](http://en.wikipedia.org/wiki/Graphics_Interchange_Format) properties
@@ -54,6 +55,7 @@ It will process files of type:
 * WebP
 * WAV
 * AVI
+* AIFF
 * PSD
 * PNG
 * BMP
