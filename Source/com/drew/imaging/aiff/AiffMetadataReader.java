@@ -1,12 +1,14 @@
 package com.drew.imaging.aiff;
 
+import com.drew.imaging.iff.IffProcessingException;
+import com.drew.imaging.iff.IffReader;
 import com.drew.lang.StreamReader;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.aiff.AiffReader;
+import com.drew.metadata.aiff.AiffHandler;
+import com.drew.metadata.file.FileMetadataReader;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,22 +22,16 @@ public class AiffMetadataReader
     @NotNull
     public static Metadata readMetadata(@NotNull File file) throws IOException
     {
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(file);
-            return readMetadata(stream);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-        }
+        Metadata metadata = new Metadata();
+        new FileMetadataReader().read(file, metadata);
+        return metadata;
     }
 
     @NotNull
-    public static Metadata readMetadata(@NotNull InputStream inputStream)
+    public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, IffProcessingException
     {
         Metadata metadata = new Metadata();
-        new AiffReader().extract(new StreamReader(inputStream), metadata);
+        new IffReader().processIff(new StreamReader(inputStream), new AiffHandler(metadata));
         return metadata;
     }
 }

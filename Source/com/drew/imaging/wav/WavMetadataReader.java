@@ -1,12 +1,13 @@
 package com.drew.imaging.wav;
 
+import com.drew.imaging.iff.IffProcessingException;
+import com.drew.imaging.iff.IffReader;
 import com.drew.imaging.riff.RiffProcessingException;
-import com.drew.imaging.riff.RiffReader;
 import com.drew.lang.StreamReader;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.file.FileMetadataReader;
-import com.drew.metadata.wav.WavRiffHandler;
+import com.drew.metadata.wav.WavHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +29,10 @@ public class WavMetadataReader
     }
 
     @NotNull
-    public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, RiffProcessingException
+    public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, IffProcessingException
     {
         Metadata metadata = new Metadata();
-        new RiffReader().processRiff(new StreamReader(inputStream), new WavRiffHandler(metadata));
+        new IffReader().processIff(new StreamReader(inputStream), new WavHandler(metadata));
         return metadata;
     }
 }

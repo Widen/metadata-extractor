@@ -20,6 +20,7 @@
  */
 package com.drew.metadata.webp;
 
+import com.drew.imaging.iff.IffHandler;
 import com.drew.imaging.riff.RiffHandler;
 import com.drew.lang.ByteArrayReader;
 import com.drew.lang.RandomAccessReader;
@@ -43,17 +44,17 @@ import java.io.IOException;
  *     <li><code>"XMP "</code>: full XMP data</li>
  * </ul>
  */
-public class WebpRiffHandler implements RiffHandler
+public class WebpHandler implements IffHandler
 {
     @NotNull
     private final Metadata _metadata;
 
-    public WebpRiffHandler(@NotNull Metadata metadata)
+    public WebpHandler(@NotNull Metadata metadata)
     {
         _metadata = metadata;
     }
 
-    public boolean shouldAcceptRiffIdentifier(@NotNull String identifier)
+    public boolean shouldAcceptIffIdentifier(@NotNull String identifier)
     {
         return identifier.equals(WebpDirectory.FORMAT);
     }

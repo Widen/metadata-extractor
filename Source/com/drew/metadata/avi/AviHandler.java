@@ -1,5 +1,6 @@
 package com.drew.metadata.avi;
 
+import com.drew.imaging.iff.IffHandler;
 import com.drew.imaging.riff.RiffHandler;
 import com.drew.lang.ByteArrayReader;
 import com.drew.lang.SequentialByteArrayReader;
@@ -9,7 +10,7 @@ import com.drew.metadata.Metadata;
 import java.io.IOException;
 
 /**
- * Implementation of {@link RiffHandler} specialising in Wav support.
+ * Implementation of {@link IffHandler} specialising in Wav support.
  *
  * Extracts data from chunk/list types:
  *
@@ -24,7 +25,7 @@ import java.io.IOException;
  *
  * @author Payton Garland
  */
-public class AviRiffHandler implements RiffHandler
+public class AviHandler implements IffHandler
 {
     @NotNull
     private final AviDirectory _directory;
@@ -32,13 +33,13 @@ public class AviRiffHandler implements RiffHandler
     @NotNull
     private String _currentList = "";
 
-    public AviRiffHandler(@NotNull Metadata metadata)
+    public AviHandler(@NotNull Metadata metadata)
     {
         _directory = new AviDirectory();
         metadata.addDirectory(_directory);
     }
 
-    public boolean shouldAcceptRiffIdentifier(@NotNull String identifier)
+    public boolean shouldAcceptIffIdentifier(@NotNull String identifier)
     {
         return identifier.equals(AviDirectory.FORMAT);
     }

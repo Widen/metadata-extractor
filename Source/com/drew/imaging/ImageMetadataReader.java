@@ -20,11 +20,8 @@
  */
 package com.drew.imaging;
 
-<<<<<<< HEAD
 import com.drew.imaging.avi.AviMetadataReader;
-=======
 import com.drew.imaging.aiff.AiffMetadataReader;
->>>>>>> Begin adding aiff support
 import com.drew.imaging.bmp.BmpMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
 import com.drew.imaging.ico.IcoMetadataReader;

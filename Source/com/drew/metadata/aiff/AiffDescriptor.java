@@ -8,13 +8,4 @@ public class AiffDescriptor extends TagDescriptor<AiffDirectory>
     {
         super(directory);
     }
-
-    @Override
-    public String getDescription(int tagType)
-    {
-        switch (tagType) {
-            default:
-                return super.getDescription(tagType);
-        }
-    }
 }
