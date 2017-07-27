@@ -6,6 +6,19 @@ import com.drew.metadata.Metadata;
 
 import java.io.IOException;
 
+/**
+ * Implementation of {@link IffHandler} specialising in Aiff support.
+ *
+ * Extracts data from chunk types:
+ *
+ * <ul>
+ *     <li><code>"comm"</code>: channel count, sample frame count, sample size, sample rate</li>
+ * </ul>
+ *
+ * Sources: http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/AIFF/AIFF.html
+ *
+ * @author Payton Garland
+ */
 public class AiffHandler implements IffHandler
 {
     AiffDirectory _directory;
