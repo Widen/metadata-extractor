@@ -22,6 +22,7 @@ package com.drew.imaging;
 
 import com.drew.imaging.bmp.BmpMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
+import com.drew.imaging.heif.HeifMetadataReader;
 import com.drew.imaging.ico.IcoMetadataReader;
 import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.imaging.mp4.Mp4MetadataReader;
@@ -159,6 +160,8 @@ public class ImageMetadataReader
                 return QtMetadataReader.readMetadata(inputStream);
             case Mp4:
                 return Mp4MetadataReader.readMetadata(inputStream);
+            case Heif:
+                return HeifMetadataReader.readMetadata(inputStream);
             default:
                 throw new ImageProcessingException("File format is not supported");
         }
