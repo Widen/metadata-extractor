@@ -2,6 +2,7 @@ package com.drew.metadata.heif.boxes;
 
 import com.drew.lang.SequentialByteArrayReader;
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.heif.HeifDirectory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -79,6 +80,15 @@ public class ItemInfoBox extends FullBox
                 }
             }
             System.out.println(itemType);
+        }
+    }
+
+    public void addMetadata(HeifDirectory directory)
+    {
+        for (ItemInfoEntry entry : entries) {
+            if(entry.itemType.equals("hvc1")) {
+                directory.setInt(HeifDirectory.TAG_IMAGE_COUNT, directory.getInteger(HeifDirectory.TAG_IMAGE_COUNT) == null ? 0 : directory.getInteger(HeifDirectory.TAG_IMAGE_COUNT) + 1);
+            }
         }
     }
 }

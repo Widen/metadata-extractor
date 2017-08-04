@@ -70,6 +70,7 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
                 primaryItemBox = new PrimaryItemBox(reader, box);
             } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_INFO)) {
                 itemInfoBox = new ItemInfoBox(reader, box);
+                itemInfoBox.addMetadata(directory);
             } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_LOCATION)) {
                 itemLocationBox = new ItemLocationBox(reader, box);
             }

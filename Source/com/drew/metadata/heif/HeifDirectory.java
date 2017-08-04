@@ -11,6 +11,8 @@ public class HeifDirectory extends Directory
     public static final int TAG_MINOR_VERSION                           = 2;
     public static final int TAG_COMPATIBLE_BRANDS                       = 3;
 
+    public static final int TAG_IMAGE_COUNT                             = 4;
+
     @NotNull
     protected static final HashMap<Integer, String> _tagNameMap = new HashMap<Integer, String>();
 
@@ -18,6 +20,7 @@ public class HeifDirectory extends Directory
         _tagNameMap.put(TAG_MAJOR_BRAND, "Major Brand");
         _tagNameMap.put(TAG_MINOR_VERSION, "Minor Version");
         _tagNameMap.put(TAG_COMPATIBLE_BRANDS, "Compatible Brands");
+        _tagNameMap.put(TAG_IMAGE_COUNT, "Image Count");
     }
 
     public HeifDirectory()
