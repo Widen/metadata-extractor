@@ -20,7 +20,7 @@ public class ItemLocationBox extends FullBox
     int dataReferenceIndex;
     byte[] baseOffset;
     int extentCount;
-    int extentIndex;
+    Extent[] extents;
 
     public ItemLocationBox(SequentialReader reader, Box box) throws IOException
     {
@@ -56,15 +56,17 @@ public class ItemLocationBox extends FullBox
             baseOffset = reader.getBytes(baseOffsetSize);
             extentCount = reader.getUInt16();
 
-            long extentIndex;
+            Long extentIndex = null;
             long extentOffset;
             long extentLength;
+            extents = new Extent[extentCount];
             for (int j = 0; j < extentCount; j++) {
                 if ((version == 1) || (version == 2) && (indexSize > 0)) {
                     extentIndex = getIntFromUnknownByte(indexSize, reader);
                 }
                 extentOffset = getIntFromUnknownByte(offsetSize, reader);
                 extentLength = getIntFromUnknownByte(lengthSize, reader);
+                extents[j] = new Extent(extentIndex == null ? null : extentIndex, extentOffset, extentLength);
             }
         }
     }
@@ -87,11 +89,11 @@ public class ItemLocationBox extends FullBox
 
     class Extent
     {
-        int index;
+        Long index;
         long offset;
         long length;
 
-        public Extent(int index, long offset, long length) {
+        public Extent(Long index, long offset, long length) {
             this.index = index;
             this.offset = offset;
             this.length = length;
