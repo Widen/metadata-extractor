@@ -26,7 +26,6 @@ public class HeifReader
             while ((atomEnd == -1) ? true : reader.getPosition() < atomEnd) {
 
                 Box box = new Box(reader);
-                System.out.println(box.type);
 
                 /*
                  * Determine if fourCC is container/atom and process accordingly

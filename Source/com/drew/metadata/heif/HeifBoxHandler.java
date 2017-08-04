@@ -16,11 +16,21 @@ import java.util.List;
  */
 public class HeifBoxHandler extends HeifHandler<HeifDirectory>
 {
+    ItemProtectionBox itemProtectionBox;
+    PrimaryItemBox primaryItemBox;
+    ItemInfoBox itemInfoBox;
+    ItemLocationBox itemLocationBox;
+
     private HeifHandlerFactory handlerFactory = new HeifHandlerFactory(this);
 
     public HeifBoxHandler(Metadata metadata)
     {
         super(metadata);
+
+        itemProtectionBox = null;
+        primaryItemBox = null;
+        itemInfoBox = null;
+        itemLocationBox = null;
     }
 
     @Override
@@ -35,7 +45,8 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
         List<String> boxes = Arrays.asList(HeifBoxTypes.BOX_FILE_TYPE,
             HeifBoxTypes.BOX_ITEM_PROTECTION,
             HeifBoxTypes.BOX_PRIMARY_ITEM,
-            HeifBoxTypes.BOX_ITEM_INFO);
+            HeifBoxTypes.BOX_ITEM_INFO,
+            HeifBoxTypes.BOX_ITEM_LOCATION);
 
         return boxes.contains(box.type);
     }
@@ -54,14 +65,13 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
             if (box.type.equals(HeifBoxTypes.BOX_FILE_TYPE)) {
                 processFileType(reader, box);
             } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_PROTECTION)) {
-                ItemProtectionBox itemProtectionBox = new ItemProtectionBox(reader, box);
-                System.out.println("here");
+                itemProtectionBox = new ItemProtectionBox(reader, box);
             } else if (box.type.equals(HeifBoxTypes.BOX_PRIMARY_ITEM)) {
-                PrimaryItemBox primaryItemBox = new PrimaryItemBox(reader, box);
-                System.out.println("here");
+                primaryItemBox = new PrimaryItemBox(reader, box);
             } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_INFO)) {
-                ItemInfoBox itemInfoBox = new ItemInfoBox(reader, box);
-                System.out.println("here");
+                itemInfoBox = new ItemInfoBox(reader, box);
+            } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_LOCATION)) {
+                itemLocationBox = new ItemLocationBox(reader, box);
             }
         }
         return this;
