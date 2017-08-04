@@ -23,7 +23,6 @@ public class HeifReader
     private void processBoxes(StreamReader reader, long atomEnd, HeifHandler heifHandler)
     {
         try {
-            long startPos = reader.getPosition();
             while ((atomEnd == -1) ? true : reader.getPosition() < atomEnd) {
 
                 Box box = new Box(reader);
@@ -36,7 +35,7 @@ public class HeifReader
                 if (heifHandler.shouldAcceptContainer(box)) {
 
                     heifHandler.processContainer(box, reader);
-                    processBoxes(reader, box.size + startPos, heifHandler);
+                    processBoxes(reader, box.size + reader.getPosition() - 8, heifHandler);
 
                 } else if (heifHandler.shouldAcceptBox(box)) {
 
