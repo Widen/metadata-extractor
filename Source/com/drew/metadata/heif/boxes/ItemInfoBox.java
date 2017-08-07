@@ -79,7 +79,7 @@ public class ItemInfoBox extends FullBox
                     itemUriType = reader.getString(4);
                 }
             }
-            System.out.println(itemType);
+            System.out.println("        " + itemType);
         }
     }
 

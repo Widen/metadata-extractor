@@ -20,6 +20,7 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
     PrimaryItemBox primaryItemBox;
     ItemInfoBox itemInfoBox;
     ItemLocationBox itemLocationBox;
+    HandlerBox handlerBox;
 
     private HeifHandlerFactory handlerFactory = new HeifHandlerFactory(this);
 
@@ -46,7 +47,9 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
             HeifBoxTypes.BOX_ITEM_PROTECTION,
             HeifBoxTypes.BOX_PRIMARY_ITEM,
             HeifBoxTypes.BOX_ITEM_INFO,
-            HeifBoxTypes.BOX_ITEM_LOCATION);
+            HeifBoxTypes.BOX_ITEM_LOCATION,
+            HeifBoxTypes.BOX_HANDLER,
+            HeifBoxTypes.BOX_HVC1);
 
         return boxes.contains(box.type);
     }
@@ -73,6 +76,8 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
                 itemInfoBox.addMetadata(directory);
             } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_LOCATION)) {
                 itemLocationBox = new ItemLocationBox(reader, box);
+            } else if (box.type.equals(HeifBoxTypes.BOX_HANDLER)) {
+                handlerBox = new HandlerBox(reader, box);
             }
         }
         return this;
