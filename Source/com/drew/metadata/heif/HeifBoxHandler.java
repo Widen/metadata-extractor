@@ -50,7 +50,8 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
             HeifBoxTypes.BOX_ITEM_LOCATION,
             HeifBoxTypes.BOX_HANDLER,
             HeifBoxTypes.BOX_HVC1,
-            HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS);
+            HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS,
+            HeifBoxTypes.BOX_AUXILIARY_TYPE_PROPERTY);
 
         return boxes.contains(box.type);
     }
@@ -84,6 +85,8 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
             } else if (box.type.equals(HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS)) {
                 ImageSpatialExtentsProperty imageSpatialExtentsProperty = new ImageSpatialExtentsProperty(reader, box);
                 imageSpatialExtentsProperty.addMetadata(directory);
+            } else if (box.type.equals(HeifBoxTypes.BOX_AUXILIARY_TYPE_PROPERTY)) {
+                AuxiliaryTypeProperty auxiliaryTypeProperty = new AuxiliaryTypeProperty(reader, box);
             }
         }
         return this;
