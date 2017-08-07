@@ -79,16 +79,12 @@ public class ItemInfoBox extends FullBox
                     itemUriType = reader.getString(4);
                 }
             }
-            System.out.println("        " + itemType);
+            System.out.println(itemType);
         }
     }
 
     public void addMetadata(HeifDirectory directory)
     {
-        for (ItemInfoEntry entry : entries) {
-            if(entry.itemType.equals("hvc1")) {
-                directory.setInt(HeifDirectory.TAG_IMAGE_COUNT, directory.getInteger(HeifDirectory.TAG_IMAGE_COUNT) == null ? 0 : directory.getInteger(HeifDirectory.TAG_IMAGE_COUNT) + 1);
-            }
-        }
+
     }
 }

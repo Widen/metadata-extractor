@@ -14,6 +14,7 @@ public class HeifBoxTypes
     public static final String BOX_ITEM_LOCATION                    = "iloc";
     public static final String BOX_HANDLER                          = "hdlr";
     public static final String BOX_HVC1                             = "hvc1";
+    public static final String BOX_IMAGE_SPATIAL_EXTENTS            = "ispe";
 
     public static ArrayList<String> _boxList = new ArrayList<String>();
 
@@ -25,5 +26,6 @@ public class HeifBoxTypes
         _boxList.add(BOX_ITEM_LOCATION);
         _boxList.add(BOX_HANDLER);
         _boxList.add(BOX_HVC1);
+        _boxList.add(BOX_IMAGE_SPATIAL_EXTENTS);
     }
 }

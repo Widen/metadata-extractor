@@ -49,7 +49,8 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
             HeifBoxTypes.BOX_ITEM_INFO,
             HeifBoxTypes.BOX_ITEM_LOCATION,
             HeifBoxTypes.BOX_HANDLER,
-            HeifBoxTypes.BOX_HVC1);
+            HeifBoxTypes.BOX_HVC1,
+            HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS);
 
         return boxes.contains(box.type);
     }
@@ -57,7 +58,9 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
     @Override
     public boolean shouldAcceptContainer(Box box)
     {
-        return box.type.equals(HeifContainerTypes.BOX_METADATA);
+        return box.type.equals(HeifContainerTypes.BOX_METADATA)
+            || box.type.equals(HeifContainerTypes.BOX_IMAGE_PROPERTY)
+            || box.type.equals(HeifContainerTypes.BOX_ITEM_PROPERTY);
     }
 
     @Override
@@ -78,6 +81,9 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
                 itemLocationBox = new ItemLocationBox(reader, box);
             } else if (box.type.equals(HeifBoxTypes.BOX_HANDLER)) {
                 handlerBox = new HandlerBox(reader, box);
+            } else if (box.type.equals(HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS)) {
+                ImageSpatialExtentsProperty imageSpatialExtentsProperty = new ImageSpatialExtentsProperty(reader, box);
+                imageSpatialExtentsProperty.addMetadata(directory);
             }
         }
         return this;
