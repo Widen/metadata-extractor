@@ -16,6 +16,18 @@ public class AuxiliaryTypeProperty extends FullBox
     {
         super(reader, box);
 
-        auxType = reader.getNullTerminatedString((int)box.size - 12, Charset.defaultCharset());
+        auxType = getZeroTerminatedString((int)box.size - 12, reader);
+    }
+
+    private String getZeroTerminatedString(int maxLengthBytes, SequentialReader reader) throws IOException
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < maxLengthBytes; i++) {
+            stringBuilder.append((char)reader.getByte());
+            if (stringBuilder.charAt(stringBuilder.length() - 1) == 0) {
+                break;
+            }
+        }
+        return stringBuilder.toString().trim();
     }
 }
