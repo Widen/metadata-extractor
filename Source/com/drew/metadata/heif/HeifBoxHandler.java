@@ -16,10 +16,6 @@ import java.util.List;
  */
 public class HeifBoxHandler extends HeifHandler<HeifDirectory>
 {
-    ItemProtectionBox itemProtectionBox;
-    PrimaryItemBox primaryItemBox;
-    ItemInfoBox itemInfoBox;
-    ItemLocationBox itemLocationBox;
     HandlerBox handlerBox;
 
     private HeifHandlerFactory handlerFactory = new HeifHandlerFactory(this);
@@ -27,11 +23,6 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
     public HeifBoxHandler(Metadata metadata)
     {
         super(metadata);
-
-        itemProtectionBox = null;
-        primaryItemBox = null;
-        itemInfoBox = null;
-        itemLocationBox = null;
     }
 
     @Override
@@ -44,14 +35,8 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
     public boolean shouldAcceptBox(@NotNull Box box)
     {
         List<String> boxes = Arrays.asList(HeifBoxTypes.BOX_FILE_TYPE,
-            HeifBoxTypes.BOX_ITEM_PROTECTION,
-            HeifBoxTypes.BOX_PRIMARY_ITEM,
-            HeifBoxTypes.BOX_ITEM_INFO,
-            HeifBoxTypes.BOX_ITEM_LOCATION,
             HeifBoxTypes.BOX_HANDLER,
-            HeifBoxTypes.BOX_HVC1,
-            HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS,
-            HeifBoxTypes.BOX_AUXILIARY_TYPE_PROPERTY);
+            HeifBoxTypes.BOX_HVC1);
 
         return boxes.contains(box.type);
     }
@@ -71,22 +56,9 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
             SequentialReader reader = new SequentialByteArrayReader(payload);
             if (box.type.equals(HeifBoxTypes.BOX_FILE_TYPE)) {
                 processFileType(reader, box);
-            } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_PROTECTION)) {
-                itemProtectionBox = new ItemProtectionBox(reader, box);
-            } else if (box.type.equals(HeifBoxTypes.BOX_PRIMARY_ITEM)) {
-                primaryItemBox = new PrimaryItemBox(reader, box);
-            } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_INFO)) {
-                itemInfoBox = new ItemInfoBox(reader, box);
-                itemInfoBox.addMetadata(directory);
-            } else if (box.type.equals(HeifBoxTypes.BOX_ITEM_LOCATION)) {
-                itemLocationBox = new ItemLocationBox(reader, box);
-            } else if (box.type.equals(HeifBoxTypes.BOX_HANDLER)) {
+            }else if (box.type.equals(HeifBoxTypes.BOX_HANDLER)) {
                 handlerBox = new HandlerBox(reader, box);
-            } else if (box.type.equals(HeifBoxTypes.BOX_IMAGE_SPATIAL_EXTENTS)) {
-                ImageSpatialExtentsProperty imageSpatialExtentsProperty = new ImageSpatialExtentsProperty(reader, box);
-                imageSpatialExtentsProperty.addMetadata(directory);
-            } else if (box.type.equals(HeifBoxTypes.BOX_AUXILIARY_TYPE_PROPERTY)) {
-                AuxiliaryTypeProperty auxiliaryTypeProperty = new AuxiliaryTypeProperty(reader, box);
+                return handlerFactory.getHandler(handlerBox, metadata);
             }
         }
         return this;

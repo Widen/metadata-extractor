@@ -22,4 +22,9 @@ public class HandlerBox extends FullBox
         reader.skip(12); // Reserved
         name = reader.getNullTerminatedString((int)box.size - 32, Charset.defaultCharset());
     }
+
+    public String getHandlerType()
+    {
+        return handlerType;
+    }
 }
