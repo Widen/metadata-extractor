@@ -70,7 +70,7 @@ public class HeifPictureHandler extends HeifHandler<HeifDirectory>
         } else if (box.type.equals(HeifBoxTypes.BOX_AUXILIARY_TYPE_PROPERTY)) {
             AuxiliaryTypeProperty auxiliaryTypeProperty = new AuxiliaryTypeProperty(reader, box);
         } else if (box.type.equals(HeifBoxTypes.BOX_HEVC_CONFIGURATION)) {
-            HevcConfigurationBox hevcConfigurationBox = new HevcConfigurationBox(reader, box);
+            HEVCDecoderConfigurationRecord HEVCDecoderConfigurationRecord = new HEVCDecoderConfigurationRecord(reader, box);
         }
         return this;
     }
