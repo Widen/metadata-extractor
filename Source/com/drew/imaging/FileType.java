@@ -43,6 +43,9 @@ public enum FileType
     Riff(null, null, true, null),
     Eps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
     AdobeEps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
+    Wav("WAV", s("audio/vnd.wave"), false, s(".wav", ".wave")),
+    Avi("AVI", s("video/vnd.avi"), false, s(".avi")),
+    Webp("WebP", s("image/webp"), false, s(".webp")),
 
     Sit("SIT", s("application/x-stuffit", "application/x-sit"), false, s(".sit")),
     Sitx("SITX", s("application/x-stuffitx", "application/x-sitx"), false, s(".sitx")),
