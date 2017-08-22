@@ -20,7 +20,6 @@
  */
 package com.drew.imaging;
 
-import com.drew.imaging.avi.AviMetadataReader;
 import com.drew.imaging.bmp.BmpMetadataReader;
 import com.drew.imaging.eps.EpsMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
@@ -33,7 +32,6 @@ import com.drew.imaging.png.PngMetadataReader;
 import com.drew.imaging.psd.PsdMetadataReader;
 import com.drew.imaging.raf.RafMetadataReader;
 import com.drew.imaging.tiff.TiffMetadataReader;
-import com.drew.imaging.wav.WavMetadataReader;
 import com.drew.imaging.webp.WebpMetadataReader;
 import com.drew.imaging.zip.IndesignPackageFilter;
 import com.drew.lang.RandomAccessStreamReader;
@@ -155,14 +153,10 @@ public class ImageMetadataReader
                 return IcoMetadataReader.readMetadata(inputStream);
             case Pcx:
                 return PcxMetadataReader.readMetadata(inputStream);
-            case Webp:
+            case Riff:
                 return WebpMetadataReader.readMetadata(inputStream);
             case Raf:
                 return RafMetadataReader.readMetadata(inputStream);
-            case Avi:
-                return AviMetadataReader.readMetadata(inputStream);
-            case Wav:
-                return WavMetadataReader.readMetadata(inputStream);
             case Indd:
                 return InddMetadataReader.readMetadata(inputStream);
             case IndesignPackage:
