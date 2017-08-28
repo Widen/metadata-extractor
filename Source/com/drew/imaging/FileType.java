@@ -31,46 +31,44 @@ import com.drew.lang.annotations.Nullable;
  */
 public enum FileType
 {
-    Unknown(null, false),
-    Jpeg("image/jpeg", false, ".jpg", ".jpeg", ".jpe"),
-    Tiff("image/tiff", true, ".tiff", ".tif"),
-    Psd("image/vnd.adobe.photoshop", false, ".psd"),
-    Png("image/png", false, ".png"),
-    Bmp("image/bmp", false, ".bmp"),
-    Gif("image/gif", false, ".gif"),
-    Ico("image/x-icon", false, ".ico"),
-    Pcx("image/x-pcx", false, ".pcx"),
-    Riff(null, true, null),
-    Zip("application/zip", true, ".zip", ".zipx"),
-    Indd("application/octet-stream", false, ".indd"),
-    IndesignPackage("application/octet-stream", false, ".zip"),
-    Docx("application/vnd.openxmlformats-officedocument.wordprocessingml.document", false, ".docx", ".docm"),
-    Pptx("application/vnd.openxmlformats-officedocument.presentationml.presentation", false, ".pptx", ".pptm"),
-    Xlsx("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", false, ".xlsx", ".xlsm"),
+    Unknown("Unknown", null, false, null),
+    Jpeg("JPEG", s("image/jpeg"), false, s(".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi")),
+    Tiff("TIFF", s("image/tiff", "image/tiff-fx"), true, s(".tiff", ".tif")),
+    Psd("PSD", s("image/vnd.adobe.photoshop"), false, s(".psd")),
+    Png("PNG", s("image/png"), false, s(".png")),
+    Bmp("BMP", s("image/bmp", "image/x-bmp"), false, s(".bmp", ".dib")),
+    Gif("GIF", s("image/gif"), false, s(".gif")),
+    Ico("ICO", s("image/x-icon"), false, s( ".ico")),
+    Pcx("PCX", s("image/vnd.zbrush.pcx", "image/x-pcx"), false, s(".pcx")),
+    Riff(null, null, true, null),
+    Eps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
+    Mov("MOV", s("video/quicktime"), true, s(".mov", ".qt")),
+    Mp4("MP4", s("video/mp4"), false, s(".mp4", ".m4a", ".m4p", ".m4b", ".m4r", ".m4v")),
+    Heif("HEIF", s("image/heif", "image/heic", "image/heif-sequence", "image/heic-sequence"), false, s(".heif", ".heic")),
 
     /** Sony camera raw. */
-    Arw(null, false, ".arw"),
+    Arw("ARW", null, false, s(".arw")),
     /** Canon camera raw, version 1. */
-    Crw(null, false, ".crw"),
+    Crw("CRW", null, false, s(".crw")),
     /** Canon camera raw, version 2. */
-    Cr2(null, false, ".cr2"),
+    Cr2("CR2", null, false, s(".cr2")),
     /** Nikon camera raw. */
-    Nef(null, false, ".nef"),
+    Nef("NEF", null, false, s(".nef")),
     /** Olympus camera raw. */
-    Orf(null, false, ".orf"),
+    Orf("ORF", null, false, s(".orf")),
     /** FujiFilm camera raw. */
-    Raf(null, false, ".raf"),
+    Raf("RAF", null, false, s(".raf")),
     /** Panasonic camera raw. */
-    Rw2(null, false, ".rw2");
+    Rw2("RW2", null, false, s(".rw2"));
 
-    private final String _mimeType;
-
+    private final String _displayName;
+    private final String[] _mimeType;
     private final boolean _isContainer;
-
     private final String[] _extensions;
 
-    FileType(String mimeType, boolean isContainer, String... extensions)
+    FileType(String displayName, String[] mimeType, boolean isContainer, String... extensions)
     {
+        _displayName = displayName;
         _mimeType = mimeType;
         _isContainer = isContainer;
         _extensions = extensions;
@@ -79,11 +77,11 @@ public enum FileType
     @NotNull
     public String getName()
     {
-        return this.name();
+        return this._displayName;
     }
 
     @Nullable
-    public String getMimeType()
+    public String[] getMimeType()
     {
         return _mimeType;
     }
@@ -98,5 +96,10 @@ public enum FileType
     public String[] getExtension()
     {
         return _extensions;
+    }
+
+    private static String[] s(String... strings)
+    {
+        return strings;
     }
 }

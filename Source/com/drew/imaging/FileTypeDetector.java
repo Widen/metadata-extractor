@@ -22,11 +22,16 @@ package com.drew.imaging;
 
 import com.drew.imaging.zip.ZipFileTypeDetector;
 import com.drew.lang.ByteTrie;
+import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.annotations.NotNull;
+import com.drew.metadata.avi.AviDirectory;
+import com.drew.metadata.wav.WavDirectory;
+import com.drew.metadata.webp.WebpDirectory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.zip.ZipInputStream;
+import java.io.InputStream;
 
 /**
  * Examines the a file's first bytes and estimates the file's type.
@@ -64,7 +69,13 @@ public class FileTypeDetector
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x02, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x03, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x05, 0x01});
+        _root.addPath(FileType.Wav, "WAVE".getBytes());
+        _root.addPath(FileType.Avi, "AVI ".getBytes());
+        _root.addPath(FileType.Webp, "WEBP".getBytes());
+        _root.addPath(FileType.Iff, "FORM".getBytes());
         _root.addPath(FileType.Riff, "RIFF".getBytes());
+        _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
+        _root.addPath(FileType.Aiff, "AIFC".getBytes()); // Compressed form of AIFF
 
         _root.addPath(FileType.Arw, "II".getBytes(), new byte[]{0x2a, 0x00, 0x08, 0x00});
         _root.addPath(FileType.Crw, "II".getBytes(), new byte[]{0x1a, 0x00, 0x00, 0x00}, "HEAPCCDR".getBytes());
@@ -79,6 +90,49 @@ public class FileTypeDetector
         _root.addPath(FileType.Zip, "PK".getBytes());
         _root.addPath(FileType.Indd, new byte[]{0x06, 0x06, (byte)0xED, (byte)0xF5, (byte)0xD8, 0x1D, 0x46, (byte)0xE5, (byte)0xBD, 0x31, (byte)0xEF, (byte)0xE7, (byte)0xFE, 0x74, (byte)0xB7, 0x1D});
 
+        // Potential root atoms... typically starts with FTYP... often at 4 byte offset
+        _root.addPath(FileType.Mov, new byte[]{0x6D, 0x6F, 0x6F, 0x76}); // moov
+        _root.addPath(FileType.Mov, new byte[]{0x77, 0x69, 0x64, 0x65}); // wide
+        _root.addPath(FileType.Mov, new byte[]{0x6D, 0x64, 0x61, 0x74}); // mdat
+        _root.addPath(FileType.Mov, new byte[]{0x66, 0x72, 0x65, 0x65}); // free
+
+        _root.addPath(FileType.Mov, "ftypqt  ".getBytes());
+
+        _root.addPath(FileType.Mp4, "ftypavc1".getBytes());
+        _root.addPath(FileType.Mp4, "ftypiso2".getBytes());
+        _root.addPath(FileType.Mp4, "ftypisom".getBytes());
+        _root.addPath(FileType.Mp4, "ftypM4A ".getBytes());
+        _root.addPath(FileType.Mp4, "ftypM4B ".getBytes());
+        _root.addPath(FileType.Mp4, "ftypM4P ".getBytes());
+        _root.addPath(FileType.Mp4, "ftypM4V ".getBytes());
+        _root.addPath(FileType.Mp4, "ftypM4VH".getBytes());
+        _root.addPath(FileType.Mp4, "ftypM4VP".getBytes());
+        _root.addPath(FileType.Mp4, "ftypmmp4".getBytes());
+        _root.addPath(FileType.Mp4, "ftypmp41".getBytes());
+        _root.addPath(FileType.Mp4, "ftypmp42".getBytes());
+        _root.addPath(FileType.Mp4, "ftypmp71".getBytes());
+        _root.addPath(FileType.Mp4, "ftypMSNV".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDAS".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDSC".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDSH".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDSM".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDSP".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDSS".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDXC".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDXH".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDXM".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDXP".getBytes());
+        _root.addPath(FileType.Mp4, "ftypNDXS".getBytes());
+
+        _root.addPath(FileType.Heif, "ftypmif1".getBytes());
+        _root.addPath(FileType.Heif, "ftypmsf1".getBytes());
+        _root.addPath(FileType.Heif, "ftypheic".getBytes());
+        _root.addPath(FileType.Heif, "ftypheix".getBytes());
+        _root.addPath(FileType.Heif, "ftyphevc".getBytes());
+        _root.addPath(FileType.Heif, "ftyphevx".getBytes());
+
+        _root.addPath(FileType.Eps, "%!PS".getBytes());
+        _root.addPath(FileType.Eps, new byte[]{(byte)0xC5, (byte)0xD0, (byte)0xD3, (byte)0xC6});
     }
 
     private FileTypeDetector() throws Exception
@@ -87,7 +141,7 @@ public class FileTypeDetector
     }
 
     @NotNull
-    public static FileType detectFileType(@NotNull final BufferedInputStream inputStream, @NotNull int offset) throws IOException
+    public static FileType detectFileType(@NotNull final BufferedInputStream inputStream, @NotNull final int offset) throws IOException
     {
         if (!inputStream.markSupported())
             throw new IOException("Stream must support mark/reset");
@@ -152,6 +206,8 @@ public class FileTypeDetector
                 return detectFileType(inputStream, 8);
             case Zip:
                 return ZipFileTypeDetector.detectFileType(inputStream);
+            case Iff:
+                return detectFileType(inputStream, 8);
             case Tiff:
             default:
                 return fileType;
