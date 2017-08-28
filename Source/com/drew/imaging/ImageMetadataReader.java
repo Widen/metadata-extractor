@@ -23,9 +23,13 @@ package com.drew.imaging;
 import com.drew.imaging.avi.AviMetadataReader;
 import com.drew.imaging.aiff.AiffMetadataReader;
 import com.drew.imaging.bmp.BmpMetadataReader;
+import com.drew.imaging.eps.EpsMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
+import com.drew.imaging.heif.HeifMetadataReader;
 import com.drew.imaging.ico.IcoMetadataReader;
 import com.drew.imaging.jpeg.JpegMetadataReader;
+import com.drew.imaging.mp4.Mp4MetadataReader;
+import com.drew.imaging.quicktime.QtMetadataReader;
 import com.drew.imaging.pcx.PcxMetadataReader;
 import com.drew.imaging.png.PngMetadataReader;
 import com.drew.imaging.psd.PsdMetadataReader;
@@ -162,6 +166,14 @@ public class ImageMetadataReader
                 return WavMetadataReader.readMetadata(inputStream);
             case Aiff:
                 return AiffMetadataReader.readMetadata(inputStream);
+            case Mov:
+                return QtMetadataReader.readMetadata(inputStream);
+            case Mp4:
+                return Mp4MetadataReader.readMetadata(inputStream);
+            case Heif:
+                return HeifMetadataReader.readMetadata(inputStream);
+            case Eps:
+                return EpsMetadataReader.readMetadata(inputStream);
             default:
                 throw new ImageProcessingException("File format is not supported");
         }
