@@ -41,12 +41,10 @@ The library understands several formats of metadata, many of which may be presen
 * [ICC Profiles](http://en.wikipedia.org/wiki/ICC_profile)
 * [Photoshop](http://en.wikipedia.org/wiki/Photoshop) fields
 * [WebP](http://en.wikipedia.org/wiki/WebP) properties
-* [WAV](http://en.wikipedia.org/wiki/WAV) properties
-* [AVI](http://en.wikipedia.org/wiki/Audio_Video_Interleave) properties
 * [PNG](http://en.wikipedia.org/wiki/Portable_Network_Graphics) properties
 * [BMP](http://en.wikipedia.org/wiki/BMP_file_format) properties
 * [GIF](http://en.wikipedia.org/wiki/Graphics_Interchange_Format) properties
-* [ICO](http://en.wikipedia.org/wiki/ICO_(file_format)) properties
+* [ICO](https://en.wikipedia.org/wiki/ICO_(file_format)) properties
 * [PCX](http://en.wikipedia.org/wiki/PCX) properties
 * [PDF](https://en.wikipedia.org/wiki/Portable_Document_Format) properties
 
@@ -55,8 +53,6 @@ It will process files of type:
 * JPEG
 * TIFF
 * WebP
-* WAV
-* AVI
 * PSD
 * PNG
 * BMP
