@@ -22,16 +22,21 @@ package com.drew.imaging;
 
 import com.drew.imaging.avi.AviMetadataReader;
 import com.drew.imaging.bmp.BmpMetadataReader;
+import com.drew.imaging.eps.EpsMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
 import com.drew.imaging.ico.IcoMetadataReader;
+import com.drew.imaging.indd.InddMetadataReader;
 import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.imaging.pcx.PcxMetadataReader;
+import com.drew.imaging.pdf.PdfMetadataReader;
 import com.drew.imaging.png.PngMetadataReader;
 import com.drew.imaging.psd.PsdMetadataReader;
 import com.drew.imaging.raf.RafMetadataReader;
 import com.drew.imaging.tiff.TiffMetadataReader;
 import com.drew.imaging.wav.WavMetadataReader;
 import com.drew.imaging.webp.WebpMetadataReader;
+import com.drew.imaging.zip.IndesignPackageFilter;
+import com.drew.imaging.zip.ZipFileFilter;
 import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.StringUtil;
 import com.drew.lang.annotations.NotNull;
@@ -159,8 +164,21 @@ public class ImageMetadataReader
                 return AviMetadataReader.readMetadata(inputStream);
             case Wav:
                 return WavMetadataReader.readMetadata(inputStream);
-            default:
+            case Indd:
+                return InddMetadataReader.readMetadata(inputStream);
+            case IndesignPackage:
+                return IndesignPackageFilter.metadata;
+            case Zip:
+                return ZipFileFilter.metadata;
+            case Pdf:
+                return PdfMetadataReader.readMetadata(inputStream);
+            case AdobeEps:
+            case Eps:
+                return EpsMetadataReader.readMetadata(inputStream);
+            case Unknown:
                 throw new ImageProcessingException("File format is not supported");
+            default:
+                return new Metadata();
         }
     }
 
