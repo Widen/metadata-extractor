@@ -21,6 +21,7 @@
 package com.drew.imaging;
 
 import com.drew.imaging.bmp.BmpMetadataReader;
+import com.drew.imaging.eps.EpsMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
 import com.drew.imaging.heif.HeifMetadataReader;
 import com.drew.imaging.ico.IcoMetadataReader;
@@ -162,6 +163,8 @@ public class ImageMetadataReader
                 return Mp4MetadataReader.readMetadata(inputStream);
             case Heif:
                 return HeifMetadataReader.readMetadata(inputStream);
+            case Eps:
+                return EpsMetadataReader.readMetadata(inputStream);
             default:
                 throw new ImageProcessingException("File format is not supported");
         }
