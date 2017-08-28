@@ -22,10 +22,15 @@ package com.drew.imaging;
 
 import com.drew.imaging.zip.ZipFileTypeDetector;
 import com.drew.lang.ByteTrie;
+import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.annotations.NotNull;
+import com.drew.metadata.avi.AviDirectory;
+import com.drew.metadata.wav.WavDirectory;
+import com.drew.metadata.webp.WebpDirectory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -65,6 +70,9 @@ public class FileTypeDetector
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x03, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x05, 0x01});
         _root.addPath(FileType.Riff, "RIFF".getBytes());
+        _root.addPath(FileType.Wav, "WAVE".getBytes());
+        _root.addPath(FileType.Avi, "AVI ".getBytes());
+        _root.addPath(FileType.Webp, "WEBP".getBytes());
         _root.addPath(FileType.Pdf, "%PDF".getBytes());
 
         _root.addPath(FileType.Arw, "II".getBytes(), new byte[]{0x2a, 0x00, 0x08, 0x00});
@@ -127,9 +135,9 @@ public class FileTypeDetector
 
         FileType fileType = _root.find(bytes);
 
-        //noinspection ConstantConditions
+    //noinspection ConstantConditions
         return fileType;
-    }
+}
 
     /**
      * Examines the file's bytes and estimates the file's type.
