@@ -45,6 +45,7 @@ public enum FileType
     AdobeEps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
     Wav("WAVE", s("audio/vnd.wave", "audio/wav", "audio/wave", "audio/x-wav"), false, s(".wav", ".wave")),
     Avi("AVI", s("video/vnd.avi", "video/avi", "video/msvideo", "video/sx-msvideo"), false, s(".avi")),
+    Webp("WebP", s("image/webp"), false, s(".webp")),
 
     Sit("SIT", s("application/x-stuffit", "application/x-sit"), false, s(".sit")),
     Sitx("SITX", s("application/x-stuffitx", "application/x-sitx"), false, s(".sitx")),
