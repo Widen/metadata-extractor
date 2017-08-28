@@ -11,11 +11,13 @@ _metadata-extractor_ is a straightforward Java library for reading metadata from
 
 The easiest way is to install the library via its [Maven package](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.drewnoakes%22%20AND%20a%3A%22metadata-extractor%22).
 
-    <dependency>
-      <groupId>com.drewnoakes</groupId>
-      <artifactId>metadata-extractor</artifactId>
-      <version>2.10.1</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>com.drewnoakes</groupId>
+  <artifactId>metadata-extractor</artifactId>
+  <version>2.10.1</version>
+</dependency>
+```
 
 Alternatively, download it from the [releases page](https://github.com/drewnoakes/metadata-extractor/releases).
 
@@ -44,6 +46,8 @@ The library understands several formats of metadata, many of which may be presen
 * [GIF](http://en.wikipedia.org/wiki/Graphics_Interchange_Format) properties
 * [ICO](https://en.wikipedia.org/wiki/ICO_(file_format)) properties
 * [PCX](http://en.wikipedia.org/wiki/PCX) properties
+* [QuickTime](https://en.wikipedia.org/wiki/QuickTime_File_Format) properties
+* [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14) properties
 
 It will process files of type:
 
@@ -56,6 +60,8 @@ It will process files of type:
 * GIF
 * ICO
 * PCX
+* QuickTime
+* MP4
 * Camera Raw
   * NEF (Nikon)
   * CR2 (Canon)
